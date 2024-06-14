@@ -24,37 +24,80 @@ int cursor_pos = 0;
 //position relation
 
 int update_string_buffers(String new_text){
-  text_pos = 0;
-  cursor_pos = 0;
+  // text_pos = 0;
+  // cursor_pos = 0;
   lcd.clear();
   if (new_text=="") {
     text=text.substring(0, text.length()-1);
+    // text=text.substring(0,text.length()-text_pos-1)+new_text+text.substring(text.length()-text_pos-1);
+    // text_pos-=new_text.length();
   }else{
-    text+=new_text;
-    // text_pos++;
+    // text+=new_text;
+    text=text.substring(0,text.length()-text_pos)+new_text+text.substring(text.length()-text_pos);
+    text_pos-=new_text.length();
   }
   // text+=new_text;
-  if (text.length()<=16) {
-    r1=text;
-    lcd.setCursor(0, 0);
-    lcd.print(r1);}
-  // }else if (text.length()>16 && text.length()<32) {
-  //   lcd.setCursor(uint8_t, uint8_t)
-  else if (text.length()>16 && text.length()<=32) {
-    r1=text.substring(0, 16);
-    r2=text.substring(16);
-    lcd.setCursor(0,0);
-    lcd.print(r1);
-    lcd.setCursor(0,1);
-    lcd.print(r2);
-  }else if (text.length()>32) {
-    r1=text.substring(16*(text.length()/16-1), 16*(text.length()/16));
-    r2=text.substring(16*(text.length()/16));
-    lcd.setCursor(0,0);
-    lcd.print(r1);
-    lcd.setCursor(0,1);
-    lcd.print(r2);
-  }
+  // if (text.length()<=16) {
+  //   r1=text;
+  //   lcd.setCursor(0, 0);
+  //   lcd.print(r1);}
+
+  // else if (text.length()>16 && text.length()<=32) {
+  //   r1=text.substring(0, 16);
+  //   r2=text.substring(16);
+  //   lcd.setCursor(0,0);
+  //   lcd.print(r1);
+  //   lcd.setCursor(0,1);
+  //   lcd.print(r2);
+  // }else if (text.length()>32) {
+  //   r1=text.substring(16*(text.length()/16-1), 16*(text.length()/16));
+  //   r2=text.substring(16*(text.length()/16));
+  //   lcd.setCursor(0,0);
+  //   lcd.print(r1);
+  //   lcd.setCursor(0,1);
+  //   lcd.print(r2);
+  // }
+  int p = text.length()-text_pos;
+    if (p>text.length()) {
+      text_pos=0;
+      p = text.length()-text_pos;
+    }else{
+      text_pos++;
+      p = text.length()-text_pos;
+    }
+    // }else {
+    // text_pos--;
+    // }
+    if (p>=16) {
+      r1=text.substring(16*(p/16-1), 16*(p/16));
+      r2=text.substring(16*(p/16));
+      lcd.setCursor(0,0);
+      lcd.print(r1);
+      lcd.setCursor(0,1);
+      lcd.print("                ");
+      lcd.setCursor(0,1);
+      lcd.print(r2);
+      if (r2.length()<16 && p==-1) {
+      for (int i = 0; i<16-r2.length(); i++) {
+        lcd.print(" ");
+      }
+      int q = text.length()%16-1;
+      lcd.setCursor(q, 1);
+      // break;
+      }
+      lcd.setCursor((p)%16, 1);
+      }
+      
+    
+    else {
+      r1=text.substring(0, 16);
+      r2=text.substring(16);
+      lcd.setCursor(0,0);
+      lcd.print(r1);
+      lcd.setCursor(0,1);
+      lcd.print(r2);
+      lcd.setCursor((p)%16, 0);
+    }
   
   return 0;
 }
