@@ -22,6 +22,12 @@ int text_pos = 0;
 int cursor_pos = 0;
 
 int update_pos(String text_nav){
+  if(cursor_pos<0 && text_pos==0){
+      cursor_pos=text.length()%32;
+      text_pos=(text.length()/32)*32;
+  return 0;
+
+    }
   if (text_nav=="text") {
   if (cursor_pos>32) {
     text_pos+=16;
@@ -38,11 +44,13 @@ int update_pos(String text_nav){
       cursor_pos=0;
       text_pos=0;
 
-    }else if(cursor_pos<=0 && text_pos==0){
-      cursor_pos=text.length()%32;
-      text_pos=(text.length()/32)*32;
+    }
+    // else if(cursor_pos<=0 && text_pos==0){
+    //   cursor_pos=text.length()%32;
+    //   text_pos=(text.length()/32)*32;
 
-    }else if(cursor_pos>=32 || cursor_pos<0){
+    // }
+    else if(cursor_pos>=32 || cursor_pos<0){
       if (cursor_pos>=32) {
         cursor_pos-=16;
         text_pos+=16;
@@ -78,7 +86,7 @@ int new_text(String data){
     text=text.substring(0,text_pos+cursor_pos)+data+text.substring(text_pos+cursor_pos);
     cursor_pos+=data.length();
   }
-  else if (data=="" && text_pos!=cursor_pos) {
+  else if (data=="" && !(cursor_pos==0 && text_pos==0)) {
     int rem=text_pos+cursor_pos-1;
     text.remove(rem, 1);
     cursor_pos--;
