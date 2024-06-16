@@ -127,8 +127,7 @@ int allclear() {
 }
 
 int backlight_toggle(int one) {
-
-  if (one < 0) {
+  if (one > 0) {
     lcd.noBacklight();
   } else {
     lcd.backlight();
@@ -257,7 +256,7 @@ int default_key(int r, int c) {
     }
   } else if (r == 3) {
     if (c == 0) {
-      new_text("pow(");
+      new_text("pow( , ");
     } else if (c == 1) {
       new_text("sin(");
     } else if (c == 2) {
